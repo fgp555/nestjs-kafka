@@ -1,0 +1,28 @@
+### Enviar un mensaje a Kafka
+POST http://localhost:3000/api/kafka/produce
+Content-Type: application/json
+
+{
+  "content": "Hola Kafka desde NestJS!"
+}
+
+### Verificar el estado del servicio de Kafka
+GET http://localhost:3000/api/kafka/status
+
+### Listar todos los temas disponibles en Kafka
+GET http://localhost:3000/api/kafka/topics
+
+### Obtener el número de particiones de un tema específico
+GET http://localhost:3000/api/kafka/partitions/my-topic
+
+### Listar los grupos de consumidores activos
+GET http://localhost:3000/api/kafka/consumers
+
+### Verificar el lag (retraso) de los consumidores en un grupo específico
+GET http://localhost:3000/api/kafka/consumer-lag/my-consumer-group
+
+### Listar los offsets de un tema específico
+GET http://localhost:3000/api/kafka/offsets/my-topic
+
+### Listar mensajes de un tema específico
+GET http://localhost:3000/api/kafka/messages/my-topic

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kafka Producer and Consumer</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #messages { margin-top: 20px; }
+    .message { padding: 5px; border-bottom: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+  <h1>Kafka Producer and Consumer</h1>
+
+  <h2>Send Message to Kafka</h2>
+  <form id="kafkaForm">
+    <label for="message">Message:</label>
+    <input type="text" id="message" name="message" required>
+    <button type="submit">Send</button>
+  </form>
+
+  <div id="response"></div>
+
+  <h2>Received Messages</h2>
+  <div id="messages"></div>
+
+  <script>
+    // Send message to Kafka via API
+    document.getElementById('kafkaForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const messageContent = document.getElementById('message').value;
+      const responseDiv = document.getElementById('response');
+
+      try {
+        const response = await fetch('/api/kafka/produce', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ content: messageContent }),
+        });
+
+        const result = await response.json();
+        responseDiv.innerHTML = `<p>${result.message}</p>`;
+        document.getElementById('message').value = ''; // Clear input after sending
+      } catch (error) {
+        responseDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+      }
+    });
+
+    // Simulate receiving messages from Kafka
+    async function fetchMessages() {
+      const messagesDiv = document.getElementById('messages');
+      // Dummy messages to simulate Kafka consumption
+      const dummyMessages = [
+        'Mensaje 1 recibido de Kafka',
+        'Mensaje 2 recibido de Kafka',
+        'Mensaje 3 recibido de Kafka'
+      ];
+      
+      dummyMessages.forEach(msg => {
+        const messageEl = document.createElement('div');
+        messageEl.className = 'message';
+        messageEl.textContent = msg;
+        messagesDiv.appendChild(messageEl);
+      });
+    }
+
+    // Load dummy messages on page load
+    fetchMessages();
+  </script>
+</body>
+</html>
